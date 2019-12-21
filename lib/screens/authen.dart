@@ -7,7 +7,7 @@ class Authen extends StatefulWidget {
   _AuthenState createState() => _AuthenState();
 }
 
-class _AuthenState extends State<Authen> {
+class _AuthenState extends State<Authen> with WidgetsBindingObserver {
 // Field
 
 // Method
@@ -35,8 +35,8 @@ class _AuthenState extends State<Authen> {
       onPressed: () {
         MaterialPageRoute materialPageRoute =
             MaterialPageRoute(builder: (BuildContext context) {
-              return Register();
-            });
+          return Register();
+        });
 
         Navigator.of(context).push(materialPageRoute);
       },
@@ -95,6 +95,43 @@ class _AuthenState extends State<Authen> {
           fontWeight: FontWeight.bold,
           color: MyStyle().textColor,
         ));
+  }
+
+// Action After RunApp
+  @override
+  void initState() {
+    super.initState();
+
+    print('--------------- initState ---------------');
+
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  // Action Before Pause
+  @override
+  void dispose() {
+    super.dispose();
+
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    switch (state) {
+      case AppLifecycleState.inactive:
+        print('---- State inactive ----');
+        break;
+      case AppLifecycleState.paused:
+        print('---- State paused ----');
+        break;
+
+      case AppLifecycleState.resumed:
+        print('---- State resumed ----');
+        break;
+      default:
+    }
   }
 
   @override
